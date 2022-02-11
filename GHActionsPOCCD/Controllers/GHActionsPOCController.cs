@@ -13,7 +13,7 @@ namespace GHActionsPOCCD.Controllers
             _gHActionsService = new GHActionsService();
         }
         [HttpPost("checkAmigos")]
-        public string HealthCheck()
+        public string HealthCheckEndPoint()
         {
             return _gHActionsService.Amigos();
         }
