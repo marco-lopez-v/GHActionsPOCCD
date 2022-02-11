@@ -13,10 +13,10 @@ WORKDIR /src
 COPY . .
 RUN dotnet restore ". GHActionsPOCCD/GHActionsPOCCD.csproj"
 WORKDIR "/src/GHActionsPOCCD"
-RUN dotnet build "GHActionsPOCCD.csproj" -c Release -o /app/build
+RUN dotnet build "GHActionsPOCCD/GHActionsPOCCD.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "GHActionsPOCCD.csproj" -c Release -o /app/publish
+RUN dotnet publish "GHActionsPOCCD/GHActionsPOCCD.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
