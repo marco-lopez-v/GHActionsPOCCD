@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "UnitTest.IntegrationTest": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
