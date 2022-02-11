@@ -3,22 +3,22 @@
 #Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
 #For more information, please see https://aka.ms/containercompat
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["UnitTest.IntegrationTest/UnitTest.IntegrationTest.csproj", "UnitTest.IntegrationTest/"]
-COPY ["GHActionsPOCCD/GHActionsPOCCD.csproj", "GHActionsPOCCD/"]
-RUN dotnet restore "UnitTest.IntegrationTest/UnitTest.IntegrationTest.csproj"
 COPY . .
-WORKDIR "/src/UnitTest.IntegrationTest"
-RUN dotnet build "UnitTest.IntegrationTest.csproj" -c Release -o /app/build
+RUN dotnet restore ". GHActionsPOCCD/GHActionsPOCCD.csproj"
+WORKDIR "/src/GHActionsPOCCD"
+RUN dotnet build "GHActionsPOCCD.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "UnitTest.IntegrationTest.csproj" -c Release -o /app/publish
+RUN dotnet publish "GHActionsPOCCD.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "UnitTest.IntegrationTest.dll"]
+ENTRYPOINT ["dotnet", "GHActionsPOCCD.dll"]
